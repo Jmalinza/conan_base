@@ -12,7 +12,7 @@ cmake --build build/
 
 ## for vscode
 
-Update the path for `conanbuildinfor.cmake` in `CMakeLists.txt`, line 23
+Update the path for `conanbuildinfo.cmake` in `CMakeLists.txt`, line 23
 
 ```
 include(${CMAKE_HOME_DIRECTORY}/build/conanbuildinfo.cmake)
