@@ -3,7 +3,7 @@ Base project for conan package manager
 
 ### first run cmake
 ```
-cmake -H. -Bbuild
+cmake -Bbuild
 ```
 ### then build
 ```
