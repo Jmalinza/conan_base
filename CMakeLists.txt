@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.9.1)
+project(BasicProject)
+set(CMAKE_CXX_STANDARD 17)
+
+if(NOT WIN32)
+  string(ASCII 27 Esc)
+  set(ColorReset "${Esc}[m")
+  set(Red         "${Esc}[31m")
+  set(Yellow      "${Esc}[33m")
+  set(BoldRed     "${Esc}[1;31m")
+  set(BoldYellow  "${Esc}[1;33m")
+endif()
+
+if((NOT CMAKE_BUILD_TYPE) OR (${CMAKE_BUILD_TYPE} MATCHES Debug))
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O0")
+    message("${BoldYellow} Debug Build ${ColorReset}")
+elseif(${CMAKE_BUILD_TYPE} MATCHES Release)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+    message("${BoldRed} Release Build ${ColorReset}")
+endif()
+
+execute_process(COMMAND conan install ${CMAKE_HOME_DIRECTORY}/conanfile.txt --build=missing)
+include(${CMAKE_HOME_DIRECTORY}/conanbuildinfo.cmake)
+conan_basic_setup()
+
+add_executable(main main.cpp src/random.cpp)
+target_include_directories(main PRIVATE ${CMAKE_HOME_DIRECTORY}/include)
+target_link_libraries(main ${CONAN_LIBS})
