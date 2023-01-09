@@ -12,14 +12,20 @@ if(NOT WIN32)
 endif()
 
 if((NOT CMAKE_BUILD_TYPE) OR (${CMAKE_BUILD_TYPE} MATCHES Debug))
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O0")
     message("${BoldYellow} Debug Build ${ColorReset}")
 elseif(${CMAKE_BUILD_TYPE} MATCHES Release)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
     message("${BoldRed} Release Build ${ColorReset}")
 endif()
 
-execute_process(COMMAND conan install ${CMAKE_HOME_DIRECTORY}/conanfile.txt --build=missing)
+# Mac install using Homebrew, Windows with Msys2, Unix using Conda
+if ((${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows") OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin"))
+    set(CONAN_COMMAND "conan")
+elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Unix")
+    set(CONAN_COMMAND "$ENV{HOME}/.local/bin/conan")
+endif()
+
+execute_process(COMMAND ${CONAN_COMMAND} install ${CMAKE_HOME_DIRECTORY}/conanfile.txt --build=missing)
+
 include(${CMAKE_HOME_DIRECTORY}/conanbuildinfo.cmake)
 conan_basic_setup()
 
