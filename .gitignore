@@ -36,3 +36,7 @@ build/
 
 # Conan
 CMakeUserPresets.json
+
+#vs
+.vs/
+.vscode/
